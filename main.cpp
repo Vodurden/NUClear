@@ -45,7 +45,7 @@ class Reactor {
         }
 
         template <typename TTrigger, typename... TWith>
-        void on(void callback(const TTrigger&, const TWith&...)) {
+        void reactOn(void callback(const TTrigger&, const TWith&...)) {
             std::vector<std::function<void ()>>& reactors = getCallbacks<TTrigger>();
             std::cout << "Doing on" << std::endl;
             reactors.push_back([callback]() {
@@ -54,7 +54,7 @@ class Reactor {
         }
 
         template <typename TTrigger, typename... TWith>
-        void on() {
+        void reactOn() {
             std::vector<std::function<void ()>>& reactors = getCallbacks<TTrigger>();
             std::cout << "Doing auto-on" << std::endl;
             reactors.push_back([this]() {
@@ -78,7 +78,7 @@ class Reactor {
 class Vision : public Reactor<Vision> {
     public:
         Vision() {
-            on<CameraData, MotorData>();
+            reactOn<CameraData, MotorData>();
         }
 
         void react(const CameraData& cameraData, const MotorData& mData) {
