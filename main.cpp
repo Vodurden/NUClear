@@ -36,7 +36,7 @@ class Reactor {
     public:
         template <typename T>
         void notify() {
-            auto callbacks = getCallbacks<T>();
+            auto& callbacks = getCallbacks<T>();
             std::cout << "Doing notify" << std::endl;
             for(auto callback = callbacks.begin(); callback != callbacks.end(); ++callback) {
                 std::cout << "Callback" << std::endl;
@@ -78,11 +78,7 @@ class Reactor {
 class Vision : public Reactor<Vision> {
     public:
         Vision() {
-            //on<CameraData, MotorData>(&reactTest);
-            //on<CameraData, MotorData>(std::bind(&Vision::react, this));
             on<CameraData, MotorData>();
-            //on<const CameraData&, const MotorData&>(std::bind(&Vision::react, this));
-            //visionReactorController.on<CameraData, MotorData>(std::bind(Vision::react, this));        
         }
 
         void react(const CameraData& cameraData, const MotorData& mData) {
