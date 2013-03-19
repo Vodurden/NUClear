@@ -1,10 +1,7 @@
 #include <iostream>
-#include <functional>
 #include <string>
-#include <typeindex>
-#include <map>
-#include <vector>
-
+#include "Reactor.h"
+#include "ReactorController.h"
 
 struct CameraData {
     int camData;
@@ -14,7 +11,7 @@ struct MotorData {
     float motorData;
 };
 
-class ReactorCore {
+/*class ReactorCore {
     public:
         template <typename T>
         void emit(T* message) {
@@ -26,6 +23,7 @@ class ReactorCore {
             return *(static_cast<T*>(m_cache[typeid(T)]));
         }
 
+    private:
         std::map<std::type_index, void*> m_cache;
 };
 
@@ -73,12 +71,12 @@ class Reactor {
 
             return m_reactors[typeid(T)];
         }
-};
+};*/
 
-class Vision : public Reactor<Vision> {
+class Vision : public NUClear::Reactor {
     public:
         Vision() {
-            reactOn<CameraData, MotorData>();
+            reactOn<Vision, CameraData, MotorData>();
         }
 
         void react(const CameraData& cameraData, const MotorData& mData) {
@@ -97,8 +95,6 @@ int main(int argc, char** argv) {
     MotorData mData;
     mData.motorData = 10;
 
-    core.emit<CameraData>(&cData);
-    core.emit<MotorData>(&mData);
-    vision.notify<CameraData>();
-    vision.notify<MotorData>();
+    NUClear::ReactorControl.emit<MotorData>(&mData);
+    NUClear::ReactorControl.emit<CameraData>(&cData);
 }
